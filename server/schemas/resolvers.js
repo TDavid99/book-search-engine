@@ -16,15 +16,15 @@ const resolvers = {
           },
           Mutation: {
             // login 
-            login: async (_, { email, password }) => {
+            login: async (parent, { email, password }) => {
               const user = await User.findOne({ email });
               // check to see if this is the correct user
               if (!user) {
                 throw new AuthenticationError("This user is invalid");
               }
-              const corrrectPassword = await User.isCorrectPassword(correctPW);
+              const correctPw = await User.isCorrectPassword(password);
               //  the correct password
-              if (!corrrectPassword) {
+              if (!correctPw) {
                 throw new AuthenticationError("This password is incorrect");
               }
         
@@ -44,11 +44,12 @@ const resolvers = {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 {_id: context.user._id },
-                { $addToSet: {saveBook: input } },
-                { new: true, runValidators: true }
-            );
+                { $addToSet: {saveBooks: input } },
+                { new: true} 
+            ).populate("saveBooks");
             return updatedUser;
-        }
+          }
+    
           throw new AuthenticationError("invaild login");
        },
   
