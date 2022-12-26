@@ -23,7 +23,7 @@ const LoginForm = () => {
 
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
-    if (form.checkvalidity() === flase) {
+    if (form.checkvalidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
