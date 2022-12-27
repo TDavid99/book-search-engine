@@ -4,11 +4,11 @@ const { User} = require("../models");
 
 const resolvers = {
     Query: {
-        me: async (parent,args, context) => {
+        me: async (_, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({ id: context.user._id })
+                const userData = await User.findOne({ _id: context.user._id })
                   .select("-__v -password")
-                  .populate("saveBooks");
+                  .populate("savedBooks");
                 return userData;
               }
               throw new AuthenticationError("You are not logged in!");
@@ -16,7 +16,7 @@ const resolvers = {
           },
           Mutation: {
             // login 
-            login: async (parent, { email, password }) => {
+            login: async (_, { email, password }) => {
               const user = await User.findOne({ email });
               // check to see if this is the correct user
               if (!user) {
@@ -40,26 +40,26 @@ const resolvers = {
 
         return {token, user};
        },
-      saveBook: async (parent, {input}, context) => {
+      saveBook: async (_, {input}, context) => {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 {_id: context.user._id },
-                { $addToSet: {savedBooks: input}},
-                { new: true} 
-            ).populate("savedBooks");
+                { $addToSet: {savedBooks: input} },
+                { new: true, runValidators: true}
+            );
             return updatedUser;
           }
     
           throw new AuthenticationError("invaild login please");
        },
   
-        removeBook: async (parent, {bookId}, context) => {
+        removeBook: async (_, {bookId}, context) => {
           if(context.user) {
             const updatedUser = await User.findOneAndUpdate(
               {_id: context.user._id},
               {$pull: {savedBooks: {bookId: bookId}}},
               {new: true}
-            ).populate("savedBooks");
+            );
 
             return updatedUser;
           }
