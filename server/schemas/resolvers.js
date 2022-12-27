@@ -44,13 +44,13 @@ const resolvers = {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 {_id: context.user._id },
-                { $addToSet: {savedBooks: input } },
+                { $addToSet: {savedBooks: input}},
                 { new: true} 
             ).populate("savedBooks");
             return updatedUser;
           }
     
-          throw new AuthenticationError("invaild login");
+          throw new AuthenticationError("invaild login please");
        },
   
         removeBook: async (parent, {bookId}, context) => {
