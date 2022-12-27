@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
-import { useMutation } from "@apollo/client";
+import {useMutation} from "@apollo/client";
 import Auth from "../utils/auth";
 import { LOGIN_USER } from "../utils/mutations";
 
@@ -28,8 +28,8 @@ const LoginForm = () => {
       event.stopPropagation();
     }
     try {
-      const { data } = await loginUser({
-        variables: { ...userFormData },
+      const {data} = await loginUser({
+        variables: {...userFormData},
       });
 
       Auth.login(data.login.token);
@@ -67,9 +67,7 @@ const LoginForm = () => {
             value={userFormData.email}
             required
           />
-          <Form.Control.Feedback type="invalid">
-            Email is required!
-          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Email is required!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group>
