@@ -27,13 +27,13 @@ const SavedBooks = () => {
       return false;
     }
     try {
-      const { user } = await removeBook({
+      const { data } = await removeBook({
         variables: {
           bookId: bookId,
         },
       });
-
-      userData = user;
+console.log(data)
+      // userData = user;
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
@@ -45,21 +45,21 @@ const SavedBooks = () => {
   // upon success, remove book's id from localStorage
 
   // if data isn't here yet, say so
-  if (!loading) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">
-        <Container>
-          <h1>Viewing saved books!</h1>
+        <Container>                                 
+          <h1>Viewing saved books {userData.username}!</h1>
         </Container>
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${
+          {userData.savedBooks?.length
+            ? `Viewing ${userData.savedBooks?.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
               }:`
             : "You have no saved books!"}
